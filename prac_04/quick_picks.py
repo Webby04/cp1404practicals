@@ -6,6 +6,7 @@ MAXIMUM = 45
 
 
 def main():
+    """Create and display a specified number of rows, each containing 6 random numbers."""
     values = []
 
     number_of_rows = int(input("How many quick picks? "))
