@@ -6,9 +6,10 @@ Actual:   27 minutes
 
 from operator import itemgetter
 
+word_counts = {}
+
 words_in_string = input("Text: ")
 words = words_in_string.split()
-word_counts = {}
 for word in words:
     if word in word_counts:
         word_counts[word] += 1
