@@ -1,7 +1,7 @@
 """
 Word Occurrences
-Estimate: 21 minutes
-Actual:   27 minutes
+Estimate: 15 minutes
+Actual:   17 minutes
 """
 
 from operator import itemgetter
