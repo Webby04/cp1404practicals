@@ -11,6 +11,7 @@ def main():
     """Read data and print champions and countries"""
     champion_data = load_champion_data(FILENAME)
     champion_wins, countries = count_champion_data(champion_data)
+    display_champion_data(champion_wins, countries)
 
 
 def count_champion_data(champion_data):
@@ -24,6 +25,16 @@ def count_champion_data(champion_data):
         except KeyError:
             champion_wins[row[2]] = 1
     return champion_wins, champion_countries
+
+
+def display_champion_data(champion_wins, champion_countries):
+    """Display winners and countries"""
+    print("Wimbledon Champions:")
+    for champion, wins in champion_wins.items():
+        print(f"{champion} {wins}")
+    country_count = len(champion_countries)
+    print(f"\nThese {country_count} countries have won Wimbledon:")
+    print(" ".join(country for country in sorted(champion_countries)))
 
 
 def load_champion_data(filename):
