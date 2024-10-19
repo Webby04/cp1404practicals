@@ -15,6 +15,13 @@ def main():
             name = input("Name: ")
         user_emails[email_input] = name
         email_input = input("Email: ")
+    display_user_info(user_emails)
+
+
+def display_user_info(user_emails):
+    """Prints the full names and email addressed"""
+    for email_input, full_name in user_emails.items():
+        print(f"{full_name} ({email_input})")
 
 
 def extract_name(email):
