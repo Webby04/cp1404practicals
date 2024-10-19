@@ -18,7 +18,11 @@ def main():
 
 
 def extract_name(email):
-    pass
+    """Formats the full name from the email address"""
+    username = email.split("@")[0]
+    split_names = username.split(".")
+    full_name = " ".join(split_names).title()
+    return full_name
 
 
 main()
