@@ -23,10 +23,8 @@ class Guitar:
 
     def get_age(self):
         """Returns the age guitar"""
-        age = CURRENT_YEAR - self.year
-        return age
+        return CURRENT_YEAR - self.year
 
     def is_vintage(self):
         """Returns True if the item is considered vintage based on its age."""
-        is_vintage_status = self.get_age() >= VINTAGE_AGE
-        return is_vintage_status
+        return self.get_age() >= VINTAGE_AGE
