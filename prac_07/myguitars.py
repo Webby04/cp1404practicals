@@ -5,6 +5,7 @@ FILENAME = "guitars.csv"
 def main():
     """Read guitars from file and display them."""
     guitars = load_guitars()
+    add_guitars(guitars)
     guitars.sort()
     display_guitars(guitars)
 
@@ -19,6 +20,12 @@ def load_guitars():
             guitars.append(guitar)
     return guitars
 
+def add_guitars(guitars):
+    name = input("Name: ")
+    year = int(input("Year: "))
+    cost = float(input("Cost: $"))
+    add_guitar = Guitar(name, year, cost)
+    guitars.append(add_guitar)
 
 def display_guitars(guitars):
     """Display all the guitars in the list."""
