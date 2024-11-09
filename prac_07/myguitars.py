@@ -22,6 +22,7 @@ def load_guitars():
     return guitars
 
 def add_guitars(guitars):
+    """Add new guitars to guitars list."""
     name = input("Name: ")
     year = int(input("Year: "))
     cost = float(input("Cost: $"))
@@ -34,6 +35,7 @@ def display_guitars(guitars):
         print(guitar)
 
 def save_guitar(guitars):
+    """Write the list of guitars to the CSV file."""
     with open(FILENAME, "w") as csvfile:
         for guitar in guitars:
             csvfile.write(f"{guitar.name},{guitar.year},{guitar.cost:.2f}\n")
