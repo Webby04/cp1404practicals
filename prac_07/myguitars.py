@@ -8,6 +8,7 @@ def main():
     add_guitars(guitars)
     guitars.sort()
     display_guitars(guitars)
+    save_guitar(guitars)
 
 
 def load_guitars():
@@ -32,5 +33,9 @@ def display_guitars(guitars):
     for guitar in guitars:
         print(guitar)
 
+def save_guitar(guitars):
+    with open(FILENAME, "w") as csvfile:
+        for guitar in guitars:
+            csvfile.write(f"{guitar.name},{guitar.year},{guitar.cost:.2f}\n")
 
 main()
