@@ -22,7 +22,8 @@ def main():
     while choice != "Q":
         if choice == "L":
             load_projects_from_file()
-
+        elif choice == "S":
+            save_projects_to_file(projects)
 
 
 def load_projects(filename):
@@ -40,10 +41,18 @@ def load_projects(filename):
 
 def load_projects_from_file():
     """Load projects from specific CSV file and return list of Project objects."""
-    filename = input("Filename: ")
-    projects = load_projects(filename)
-    print(f"Loaded {len(projects)} projects from {filename}")
+    load_filename = input("Filename: ")
+    projects = load_projects(load_filename)
+    print(f"Loaded {len(projects)} projects from {load_filename}")
     return projects
+
+def save_projects_to_file(projects):
+    save_filename = input("Enter filename to save to: ")
+    with open(save_filename, "w") as file:
+        for project in projects:
+            file.write(f"{project.name}\t{project.start_date.strftime('%d/%m/%Y')}\t{project.priority}\t"
+                       f"{project.cost_estimate}\t{project.completion_percentage}\n")
+    print(f"Projects saved to {save_filename}")
 
 
 
