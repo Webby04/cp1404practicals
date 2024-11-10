@@ -1,7 +1,7 @@
 """
 Project
-Estimate: 90 minutes
-Actual:   23 minutes
+Estimate: 30 minutes
+Actual:   35 minutes
 """
 
 import datetime
