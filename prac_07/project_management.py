@@ -12,6 +12,7 @@ FILENAME = "projects.txt"
 MENU = ("- (L)oad projects\n- (S)ave projects\n- (D)isplay projects\n- (F)ilter projects "
         "by date\n- (A)dd new project\n- (U)pdate project\n- (Q)uit")
 
+
 def main():
     """Menu for project management."""
     print("Welcome to Pythonic Project Management")
@@ -29,7 +30,6 @@ def main():
         elif choice == "F":
             filter_projects(projects)
 
-
         print(MENU)
         choice = input(">>> ").upper()
 
@@ -38,7 +38,7 @@ def load_projects(filename):
     """Load projects from CSV file and return list of Project objects."""
     projects = []
     with open(filename, 'r') as file:
-        file.readline() # Skip header
+        file.readline()  # Skip header
         for line in file:
             # Split by commas and unpack the 5 values
             name, start_date, priority, cost_estimate, completion_percentage = line.strip().split('\t')
@@ -47,12 +47,14 @@ def load_projects(filename):
             projects.append(project)
     return projects
 
+
 def load_projects_from_file():
     """Load projects from specific CSV file and return list of Project objects."""
     load_filename = input("Filename: ")
     projects = load_projects(load_filename)
     print(f"Loaded {len(projects)} projects from {load_filename}")
     return projects
+
 
 def save_projects_to_file(projects):
     """Save the current projects to a specified file."""
@@ -62,6 +64,7 @@ def save_projects_to_file(projects):
             file.write(f"{project.name}\t{project.start_date.strftime('%d/%m/%Y')}\t{project.priority}\t"
                        f"{project.cost_estimate}\t{project.completion_percentage}\n")
     print(f"Projects saved to {save_filename}")
+
 
 def display_projects(projects):
     """Display projects by complete and incomplete projects."""
@@ -74,9 +77,13 @@ def display_projects(projects):
     for project in sorted(complete_projects):
         print(project)
 
+
 def filter_projects(projects):
     """Filter projects that start after specific date"""
     date_string = input("Show projects that start after date (dd/mm/yyyy): ")
+    while date_string == "":
+        print("Input can not be blank")
+        date_string = input("Show projects that start after date (dd/mm/yyyy): ")
     date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
     filtered_projects = [project for project in projects if
                          datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date() > date]
@@ -86,7 +93,6 @@ def filter_projects(projects):
             print(project)
     else:
         print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
-
 
 
 main()
