@@ -102,7 +102,7 @@ def filter_projects(projects):
         try:
             date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
             filtered_projects = [project for project in projects if project.start_date.date() >= date]
-            # filtered_projects = projects.sort(key=itemgetter(1))
+
             if filtered_projects:
                 filtered_projects.sort()
                 for project in filtered_projects:
