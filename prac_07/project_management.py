@@ -38,10 +38,57 @@ def main():
 def add_project(projects):
     print("Let's add a new project")
     add_name = input("Name: ").title()
-    add_date = input("Start date (dd/mm/yyyy): ").title()
-    add_priority = int(input("Priority: "))
-    add_cost = float(input("Cost estimate: $"))
-    add_percentage = int(input("Percent complete: "))
+    while add_name == "":
+        print("Name cannot be blank")
+        add_name = input("Name: ").title()
+    is_valid_input = False
+    add_date = 0
+    while not is_valid_input:
+        add_date = input("Start date (dd/mm/yyyy): ")
+        try:
+            datetime.datetime.strptime(add_date, "%d/%m/%Y").date()
+            is_valid_input = True
+        except ValueError:
+            print("Invalid date format. Please enter the date in dd/mm/yyyy format.")
+    add_priority = 0
+    is_valid_input = False
+    while not is_valid_input:  # Make sure priority input is valid
+        try:
+            add_priority = int(input("Priority: "))
+            if add_priority == "":
+                print("Input can not be blank")
+            elif add_priority > 0:
+                is_valid_input = True
+            else:
+                print("Number must be > 0")
+        except ValueError:
+            print("Invalid input; enter a valid number")
+    add_cost = 0
+    is_valid_input = False
+    while not is_valid_input:  # Make sure priority input is valid
+        try:
+            add_cost = float(input("Cost estimate: $"))
+            if add_cost == "":
+                print("Cost estimate cannot be blank")
+            elif add_cost >= 0:
+                is_valid_input = True
+            else:
+                print("Cost estimate must be >= 0")
+        except ValueError:
+            print("Invalid input; enter a valid number")
+    add_percentage = 0
+    is_valid_input = False
+    while not is_valid_input:
+        try:
+            add_percentage = int(input("Percent complete: "))
+            if add_percentage == "":
+                print("Percent estimate cannot be blank")
+            elif 0 <= add_percentage <= 100:
+                is_valid_input = True
+            else:
+                print("Percent estimate must be >= 0 and <= 100")
+        except ValueError:
+            print("Invalid input; enter a valid number")
     project = Project(add_name, add_date, int(add_priority), float(add_cost), int(add_percentage))
     projects.append(project)
 
