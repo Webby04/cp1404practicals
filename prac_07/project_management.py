@@ -162,23 +162,44 @@ def update_project(projects):
     """Select a project and update its completion percentage and priority"""
     for index, project in enumerate(projects, 0):
         print(f"{index} {project}")
-    project_choice = int(input("Project choice: "))
-    while project_choice < 0 or project_choice > (len(projects) - 1):
-        print("Invalid place number")
-        project_choice = int(input("Project choice: "))
+    project_choice = 0
+    is_valid_input = False
+    while not is_valid_input:
+        project_choice = input("Project choice: ")
+        if project_choice == "":
+            print("Project choice cannot be blank")
+        else:
+            try:
+                project_choice = int(project_choice)
+                if 0 <= project_choice <= (len(projects) - 1):
+                    is_valid_input = True
+                else:
+                    print("Invalid place number")
+            except ValueError:
+                print("Invalid input; enter a valid number")
     for index, project in enumerate(projects, 0):
         if index == project_choice:
             print(project)
-            new_percentage = int(input("New percentage: "))
-            while new_percentage < 0 or new_percentage > 100:
-                print("Invalid percentage; it must be between 0 and 100")
-                new_percentage = int(input("New percentage: "))
-            project.update_percentage(new_percentage)
-            new_priority = int(input("New priority: "))
-            while new_priority < 0 or new_priority > len(projects):
-                print(f"Invalid priority; it must be between 0 and {len(projects)}")
-                new_priority = int(input("New priority: "))
-            project.update_priority(new_priority)
+            try:
+                new_percentage = input("New percentage: ")
+                if new_percentage != "":
+                    while not (0 <= int(new_percentage) <= 100):
+                        print("Invalid percentage; it must be between 0 and 100")
+                        new_percentage = input("New percentage: ")
+                    project.update_percentage(int(new_percentage))
+            except ValueError:
+                print("Invalid input; enter a valid number")
+            try:
+                new_priority = input("New priority: ")
+                if new_priority != "":
+                    while not (0 <= int(new_priority) <= len(projects)):
+                        print(f"Invalid priority; it must be between 0 and {len(projects)}")
+                        new_priority = input("New priority: ")
+                    project.update_priority(int(new_priority))
+            except ValueError:
+                print("Invalid input; enter a valid number")
+
+
 
 
 main()
