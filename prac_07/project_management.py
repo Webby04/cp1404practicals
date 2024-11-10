@@ -12,6 +12,7 @@ FILENAME = "projects.txt"
 MENU = ("- (L)oad projects\n- (S)ave projects\n- (D)isplay projects\n- (F)ilter projects "
         "by date\n- (A)dd new project\n- (U)pdate project\n- (Q)uit")
 
+
 def main():
     """Menu for project management."""
     print("Welcome to Pythonic Project Management")
@@ -30,9 +31,71 @@ def main():
             filter_projects(projects)
         elif choice == "A":
             add_project(projects)
-
+        elif choice == "U":
+            update_project(projects)
         print(MENU)
         choice = input(">>> ").upper()
+
+
+def load_projects(filename):
+    """Load projects from CSV file and return list of Project objects."""
+    projects = []
+    with open(filename, 'r') as file:
+        file.readline()  # Skip header
+        for line in file:
+            # Split by commas and unpack the 5 values
+            name, start_date, priority, cost_estimate, completion_percentage = line.strip().split('\t')
+            # Create a Project object with the converted start_date
+            project = Project(name, start_date, int(priority), float(cost_estimate), int(completion_percentage))
+            projects.append(project)
+    return projects
+
+
+def load_projects_from_file():
+    """Load projects from specific CSV file and return list of Project objects."""
+    load_filename = input("Filename: ")
+    projects = load_projects(load_filename)
+    print(f"Loaded {len(projects)} projects from {load_filename}")
+    return projects
+
+
+def save_projects_to_file(projects):
+    """Save the current projects to a specified file."""
+    save_filename = input("Enter filename to save to: ")
+    with open(save_filename, "w") as file:
+        for project in projects:
+            file.write(f"{project.name}\t{project.start_date.strftime('%d/%m/%Y')}\t{project.priority}\t"
+                       f"{project.cost_estimate}\t{project.completion_percentage}\n")
+    print(f"Projects saved to {save_filename}")
+
+
+def display_projects(projects):
+    """Display projects by complete and incomplete projects."""
+    incomplete_projects = [project for project in projects if not project.is_complete()]
+    complete_projects = [project for project in projects if project.is_complete()]
+    print("Incomplete projects:")
+    for project in sorted(incomplete_projects):
+        print(project)
+    print("Completed projects:")
+    for project in sorted(complete_projects):
+        print(project)
+
+
+def filter_projects(projects):
+    """Filter projects that start after specific date"""
+    date_string = input("Show projects that start after date (dd/mm/yyyy): ")
+    while date_string == "":
+        print("Input can not be blank")
+        date_string = input("Show projects that start after date (dd/mm/yyyy): ")
+    date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+    filtered_projects = [project for project in projects if
+                         datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date() > date]
+    if filtered_projects:
+        print(f"Projects starting after {date.strftime('%d/%m/%Y')}:")
+        for project in filtered_projects:
+            print(project)
+    else:
+        print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
 
 
 def add_project(projects):
@@ -92,63 +155,26 @@ def add_project(projects):
     project = Project(add_name, add_date, int(add_priority), float(add_cost), int(add_percentage))
     projects.append(project)
 
-
-def load_projects(filename):
-    """Load projects from CSV file and return list of Project objects."""
-    projects = []
-    with open(filename, 'r') as file:
-        file.readline() # Skip header
-        for line in file:
-            # Split by commas and unpack the 5 values
-            name, start_date, priority, cost_estimate, completion_percentage = line.strip().split('\t')
-            # Create a Project object with the converted start_date
-            project = Project(name, start_date, int(priority), float(cost_estimate), int(completion_percentage))
-            projects.append(project)
-    return projects
-
-def load_projects_from_file():
-    """Load projects from specific CSV file and return list of Project objects."""
-    load_filename = input("Filename: ")
-    projects = load_projects(load_filename)
-    print(f"Loaded {len(projects)} projects from {load_filename}")
-    return projects
-
-def save_projects_to_file(projects):
-    """Save the current projects to a specified file."""
-    save_filename = input("Enter filename to save to: ")
-    with open(save_filename, "w") as file:
-        for project in projects:
-            file.write(f"{project.name}\t{project.start_date.strftime('%d/%m/%Y')}\t{project.priority}\t"
-                       f"{project.cost_estimate}\t{project.completion_percentage}\n")
-    print(f"Projects saved to {save_filename}")
-
-def display_projects(projects):
-    """Display projects by complete and incomplete projects."""
-    incomplete_projects = [project for project in projects if not project.is_complete()]
-    complete_projects = [project for project in projects if project.is_complete()]
-    print("Incomplete projects:")
-    for project in sorted(incomplete_projects):
-        print(project)
-    print("Completed projects:")
-    for project in sorted(complete_projects):
-        print(project)
-
-def filter_projects(projects):
-    """Filter projects that start after specific date"""
-    date_string = input("Show projects that start after date (dd/mm/yyyy): ")
-    while date_string == "":
-        print("Input can not be blank")
-        date_string = input("Show projects that start after date (dd/mm/yyyy): ")
-    date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-    filtered_projects = [project for project in projects if
-                         datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date() > date]
-    if filtered_projects:
-        print(f"Projects starting after {date.strftime('%d/%m/%Y')}:")
-        for project in filtered_projects:
+def update_project(projects):
+    for index, project in enumerate(projects, 0):
+        print(f"{index} {project}")
+    project_choice = int(input("Project choice: "))
+    while project_choice < 0 or project_choice > (len(projects) - 1):
+        print("Invalid place number")
+        project_choice = int(input("Project choice: "))
+    for index, project in enumerate(projects, 0):
+        if index == project_choice:
             print(project)
-    else:
-        print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
-
+            new_percentage = int(input("New percentage: "))
+            while new_percentage < 0 or new_percentage > 100:
+                print("Invalid percentage; it must be between 0 and 100")
+                new_percentage = int(input("New percentage: "))
+            project.update_percentage(new_percentage)
+            new_priority = int(input("New priority: "))
+            while new_priority < 0 or new_priority > len(projects):
+                print(f"Invalid priority; it must be between 0 and {len(projects)}")
+                new_priority = int(input("New priority: "))
+            project.update_priority(new_priority)
 
 
 main()
