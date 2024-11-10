@@ -33,6 +33,8 @@ def main():
             add_project(projects)
         elif choice == "U":
             update_project(projects)
+        else:
+            print("Invalid choice")
         print(MENU)
         choice = input(">>> ").upper()
 
@@ -99,6 +101,7 @@ def filter_projects(projects):
 
 
 def add_project(projects):
+    """Add a new project to the list of projects."""
     print("Let's add a new project")
     add_name = input("Name: ").title()
     while add_name == "":
@@ -156,6 +159,7 @@ def add_project(projects):
     projects.append(project)
 
 def update_project(projects):
+    """Select a project and update its completion percentage and priority"""
     for index, project in enumerate(projects, 0):
         print(f"{index} {project}")
     project_choice = int(input("Project choice: "))
