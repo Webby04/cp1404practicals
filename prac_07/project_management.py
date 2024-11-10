@@ -22,7 +22,7 @@ def main():
     choice = input(">>> ").upper()
     while choice != "Q":
         if choice == "L":
-            load_projects_from_file()
+            projects = load_projects_from_file()
         elif choice == "S":
             save_projects_to_file(projects)
         elif choice == "D":
@@ -37,6 +37,7 @@ def main():
             print("Invalid choice")
         print(MENU)
         choice = input(">>> ").upper()
+    save_projects(projects)
 
 
 def load_projects(filename):
@@ -60,6 +61,16 @@ def load_projects_from_file():
     print(f"Loaded {len(projects)} projects from {load_filename}")
     return projects
 
+def save_projects(projects):
+    """Save the current projects to file."""
+    save_results = input(f"Would you like to save to {FILENAME}? ").lower()
+    if save_results != "no":
+        with open(FILENAME, "w") as file:
+            for project in projects:
+                file.write(f"{project.name}\t{project.start_date.strftime('%d/%m/%Y')}\t{project.priority}\t"
+                           f"{project.cost_estimate}\t{project.completion_percentage}\n")
+        print(f"Projects saved to {FILENAME}")
+    print("Thank you for using custom-built project management software.")
 
 def save_projects_to_file(projects):
     """Save the current projects to a specified file."""
@@ -77,27 +88,30 @@ def display_projects(projects):
     complete_projects = [project for project in projects if project.is_complete()]
     print("Incomplete projects:")
     for project in sorted(incomplete_projects):
-        print(project)
+        print(f"  {project}")
     print("Completed projects:")
     for project in sorted(complete_projects):
-        print(project)
+        print(f"  {project}")
 
 
 def filter_projects(projects):
     """Filter projects that start after specific date"""
-    date_string = input("Show projects that start after date (dd/mm/yyyy): ")
-    while date_string == "":
-        print("Input can not be blank")
+    is_valid_input = False
+    while not is_valid_input:
         date_string = input("Show projects that start after date (dd/mm/yyyy): ")
-    date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
-    filtered_projects = [project for project in projects if
-                         datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date() > date]
-    if filtered_projects:
-        print(f"Projects starting after {date.strftime('%d/%m/%Y')}:")
-        for project in filtered_projects:
-            print(project)
-    else:
-        print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
+        try:
+            date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+            filtered_projects = [project for project in projects if project.start_date.date() >= date]
+            # filtered_projects = projects.sort(key=itemgetter(1))
+            if filtered_projects:
+                filtered_projects.sort()
+                for project in filtered_projects:
+                    print(project)
+            else:
+                print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
+            is_valid_input = True
+        except ValueError:
+            print("Invalid date format. Please enter the date in dd/mm/yyyy format.")
 
 
 def add_project(projects):
@@ -107,8 +121,8 @@ def add_project(projects):
     while add_name == "":
         print("Name cannot be blank")
         add_name = input("Name: ").title()
-    is_valid_input = False
     add_date = 0
+    is_valid_input = False
     while not is_valid_input:
         add_date = input("Start date (dd/mm/yyyy): ")
         try:
