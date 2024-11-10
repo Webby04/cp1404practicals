@@ -26,6 +26,10 @@ def main():
             save_projects_to_file(projects)
         elif choice == "D":
             display_projects(projects)
+        elif choice == "F":
+            filter_projects(projects)
+
+
         print(MENU)
         choice = input(">>> ").upper()
 
@@ -51,6 +55,7 @@ def load_projects_from_file():
     return projects
 
 def save_projects_to_file(projects):
+    """Save the current projects to a specified file."""
     save_filename = input("Enter filename to save to: ")
     with open(save_filename, "w") as file:
         for project in projects:
@@ -59,6 +64,7 @@ def save_projects_to_file(projects):
     print(f"Projects saved to {save_filename}")
 
 def display_projects(projects):
+    """Display projects by complete and incomplete projects."""
     incomplete_projects = [project for project in projects if not project.is_complete()]
     complete_projects = [project for project in projects if project.is_complete()]
     print("Incomplete projects:")
@@ -67,6 +73,19 @@ def display_projects(projects):
     print("Completed projects:")
     for project in sorted(complete_projects):
         print(project)
+
+def filter_projects(projects):
+    """Filter projects that start after specific date"""
+    date_string = input("Show projects that start after date (dd/mm/yyyy): ")
+    date = datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+    filtered_projects = [project for project in projects if
+                         datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date() > date]
+    if filtered_projects:
+        print(f"Projects starting after {date.strftime('%d/%m/%Y')}:")
+        for project in filtered_projects:
+            print(project)
+    else:
+        print(f"No projects start after {date.strftime('%d/%m/%Y')}.")
 
 
 
