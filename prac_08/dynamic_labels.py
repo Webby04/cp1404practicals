@@ -14,7 +14,7 @@ class DynamicLabelsApp(App):
     def build(self, **kwargs):
         """Build the Kivy GUI."""
         self.title = "Dynamic Labels"
-        self.root = Builder.load_file('dynamic_labels1.kv')
+        self.root = Builder.load_file('dynamic_labels.kv')
         self.create_labels()
         return self.root
 
