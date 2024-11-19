@@ -14,7 +14,7 @@ class BoxLayoutDemo(App):
         self.root.ids.output_label.text = f"Hello {self.root.ids.input_name.text}"
 
     def press_clear(self):
-        """Clear the input name and greeting when pressed."""
+        """Clear the input name and greeting when pressed. """
         self.root.ids.input_name.text = ""
         self.root.ids.output_label.text = ""
 
