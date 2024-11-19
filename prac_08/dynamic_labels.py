@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 
 
 class DynamicLabelsApp(App):
-    """Kivy app to demo dynamic label creation."""
+    """Kivy app to demo dynamic label creation. """
 
     def __init__(self, **kwargs):
         """Construct main app."""
