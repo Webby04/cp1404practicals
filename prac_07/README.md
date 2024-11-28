@@ -21,4 +21,3 @@ as well as the different ways to write code.
 
 - [Programming Patterns Page](https://github.com/CP1404/Starter/wiki/Programming-Patterns)
 - [CP1404 Practicals Instructions](https://github.com/CP1404/Practicals)
-
